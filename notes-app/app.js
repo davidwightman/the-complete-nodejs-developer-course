@@ -1,10 +1,10 @@
-// const add = require('./utils.js')
-
-
-// console.log(add(3, 4))
-
-
+// import validator from 'validator';
+// import { getNotes } from 'notes';
 const getNotes = require('./notes.js')
-const notes = getNotes();
 
+var validator = require('validator');
+
+const notes = getNotes();
 console.log(notes)
+
+console.log(validator.isURL('https://www.davi.com'))
