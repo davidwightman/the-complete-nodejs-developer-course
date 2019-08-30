@@ -1,64 +1,64 @@
-// import validator from 'validator';
-// import { getNotes } from 'notes';
-const getNotes = require('./notes.js');
-const chalk = require('chalk');
-const yargs = require('yargs');
+const chalk = require('chalk')
+const yargs = require('yargs')
+const notes = require('./notes.js')
 
-//const command = process.argv[2]
 
-//create add command
+// Customize yargs version
+yargs.version('1.1.0')
+
+// Create add command
 yargs.command({
     command: 'add',
     describe: 'Add a new note',
     builder: {
         title: {
-            describe: 'note title',
+            describe: 'Note title',
             demandOption: true,
             type: 'string'
         },
         body: {
-            describe: 'body of note',
+            describe: 'Note body',
             demandOption: true,
             type: 'string'
         }
     },
     handler: function (argv) {
-        console.log('Title: ' + argv.title)
-        console.log('Body: ' +argv.body)
+        notes.addNote(argv.title, argv.body)
     }
 })
 
-// create remove command
+// Create remove command
 yargs.command({
     command: 'remove',
-    describe: 'Remove a new note',
-    handler: function () {
-        console.log('removing the note')
+    describe: 'Remove a note',
+    builder: {
+        title: {
+            describe: 'Note title',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler: function (argv) {
+        notes.removeNote(argv.title)
     }
 })
 
-// create list command
+// Create list command
 yargs.command({
     command: 'list',
-    describe: 'listing out all of the notes',
+    describe: 'List your notes',
     handler: function () {
-        console.log('listing out all of the notes')
+        console.log('Listing out all notes')
     }
 })
 
-// create list command
+// Create read command
 yargs.command({
     command: 'read',
     describe: 'Read a note',
     handler: function () {
-        console.log('reading a note')
+        console.log('Reading a note')
     }
 })
 
-console.log(process.argv)
 yargs.parse()
-// if (command === 'add') {
-//     console.log('adding note!')
-// } else if (command === 'remove') {
-//     console.log('removing note')
-// }
