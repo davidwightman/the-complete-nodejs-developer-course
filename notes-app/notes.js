@@ -26,16 +26,18 @@ const addNote = function (title, body) {
 
 const removeNote = function (title) {
     try {
-        console.log(title)
+        const notes = loadNotes()
+    const titleCheck = notes.filter((item, index) => {
+        if (item.title === title) {
+            notes.splice(index, 1); 
+        }
+    })
+       console.log(notes)
     } catch (e) {
+        console.log(`remove failed: ${e}`)
         return []
     }
-    // const notes = loadNotes()
-    // const titleCheck = notes.filter(item => {
-    //     if (item.title === title) {
-
-    //     }
-    // })
+    
 }
 
 const saveNotes = (notes) => {
