@@ -1,6 +1,9 @@
+// require('dotenv').config()
 const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
+const geocode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
 
 const app = express();
 
@@ -34,8 +37,42 @@ name: 'David Wightman'})
 })
 
 app.get('/weather', (req, res) => {
-    res.send({forcast: 'it is snowing',
-        location: 'new jersey'})
+    if (!req.query.address) {
+        return res.send({
+            error: 'you must provide an address'
+        })
+    }
+
+    geocode(req.query.address, (error, { longitude, latitude, location }) => {
+        if (error) {
+            return res.send({ error })
+        }
+        forecast(longitude, latitude, (error, forecastData) => {
+            if (error) {
+                return res.send({ error })
+            }
+            
+            console.log(location)
+            console.log(forecastData)
+
+            res.send({forecast: forecastData,
+                location: location,
+                address: req.query.address })
+        })
+    })
+
+})
+
+app.get('/products', (req, res)=>{
+    if (!req.query.search) {
+        return res.send({
+            error: 'you must provide a search term'
+        })
+    }
+    console.log(req.query.search)
+    res.send({
+        products: []
+    })
 })
 
 app.get('/help/*', (req, res) => {
