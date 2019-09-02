@@ -1,20 +1,31 @@
+const path = require('path')
 const express = require('express')
 
 const app = express();
 
-app.get('', (req, res) => {
-    res.send('<h1>hello express</h1>')
-})
+// define paths for Express config
+const publicDirectoryPath = path.join(__dirname, '../public')
+const viewsPath = path.join(__dirname, '../templates')
 
-app.get('/help', (req, res) => {
-    res.send({
-        name: 'david',
-        hi: 'hi'
-    })
+// setup handlebars engine and views location
+app.set('view engine', 'hbs')
+app.set('views', viewsPath)
+
+// setup static directory to serve
+app.use(express.static(publicDirectoryPath))
+
+app.get('', (req, res) => {
+    res.render('index', { title: 'Weather APP', 
+name: 'me'})
 })
 
 app.get('/about', (req, res) => {
-    res.send('<h1>about page</h1>')
+    res.render('about', { title: 'About Me', 
+name: 'David'})
+})
+
+app.get('/help', (req, res) => {
+    res.render('help', { message: 'Example Message'})
 })
 
 app.get('/weather', (req, res) => {
